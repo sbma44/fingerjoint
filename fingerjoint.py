@@ -5,11 +5,10 @@ class FingerJointMaker(object):
 	"""
 	Creates SVGs of laser-cuttable components that add up to boxes built with finger joints.
 
-	width: Width of the panel. What this means depends on the fingers_inward param.
-	height: Height of the panel. What this means depends on the fingers_inward param.
+	width: Width of the panel. Refers to interior dimension.
+	height: Height of the panel. Refers to interior dimention.
 	finger_width: How wide each finger joint is. Often set to the material thickness.
-	suppressed_fingers: length-4 tuple of ints; numbers of fingers to lop off each side (CSS ordering). Often aesthetically desirable. 
-	fingers_inward: Do the fingers extend beyond the width x height bounding box or cut into it? CSS ordering, length-4 tuple of booleans.
+	suppressed_fingers: length-4 tuple of ints; numbers of fingers to lop off each side (CSS ordering). Often aesthetically desirable. 	
 	kerf: Anticipated width of the material lost to the cutting beam.
 	finger_width_safety_margin: Additional material to add to each finger. Useful for accounting for unanticipated variations in material thickness. Often set to 10% of finger_width.
 	"""
@@ -19,12 +18,11 @@ class FingerJointMaker(object):
 	STROKE_COLOR = 'black'
 	SVG_MARGIN = 10 # purely for prettiness of the output SVGs -- padding around emitted points
 	
-	def __init__(self, width, height, finger_width, suppressed_fingers=(0, 0, 0, 0), fingers_inward=(True, True, True, True), kerf=0, finger_width_safety_margin=0):
+	def __init__(self, width, height, finger_width, suppressed_fingers=(0, 0, 0, 0), kerf=0, finger_width_safety_margin=0):
 		self.width = width
 		self.height = height
 		self.finger_width = finger_width
-		self.suppressed_fingers = suppressed_fingers
-		self.fingers_inward = fingers_inward
+		self.suppressed_fingers = suppressed_fingers		
 		self.kerf = 0
 		self.finger_width_safety_margin = finger_width_safety_margin
 		self.svg_width = None
@@ -32,10 +30,10 @@ class FingerJointMaker(object):
 
 		self.points = None
 
-		super(FingerJointPanel, self).__init__()
+		super(FingerJointMaker, self).__init__()
 
 
-	def _make_edge(self, length, finger_width, fingers_inward, suppressed_fingers, kerf, finger_width_safety_margin):
+	def _make_edge(self, length, finger_width, suppressed_fingers, kerf, finger_width_safety_margin):
 		""" Internal method to construct an edge beginning at the origin """
 		points = np.array([[0.0, 0.0]], float)
 		
@@ -48,8 +46,8 @@ class FingerJointMaker(object):
 		current_x = (kerf + spare_change) / 2.0		
 		y = (kerf / 2.0)
 		
-		y_offset = (finger_width + finger_width_safety_margin) * (fingers_inward and -1 or 1)
-		x_offset_abs = (kerf / 2.0) * (fingers_inward and 1 or -1)
+		y_offset = finger_width + finger_width_safety_margin
+		x_offset_abs = kerf / 2.0
 		
 		i = 0
 		while current_x <= ((length + kerf) - (spare_change / 2.0)):						
@@ -75,7 +73,7 @@ class FingerJointMaker(object):
 		""" Construct a panel in the object's points collection """
 		edge_length = (self.width, self.height, self.width, self.height)
 		for (i,el) in enumerate(edge_length):
-			new_points = self._make_edge(el, self.finger_width, self.fingers_inward[i], self.suppressed_fingers[i], self.kerf, self.finger_width_safety_margin)
+			new_points = self._make_edge(el, self.finger_width, self.suppressed_fingers[i], self.kerf, self.finger_width_safety_margin)
 			if self.points is None:
 				self.points = new_points.copy()
 			else:
@@ -113,7 +111,7 @@ class FingerJointMaker(object):
 		(self.svg_width, self.svg_height) = largest
 
 
-	def make_svg(self, filename=None):
+	def svg(self, filename=None):
 		""" Emit some SVG markup, optionally to a filename """
 		self.center_points()
 
@@ -164,10 +162,10 @@ class FingerJointMaker(object):
 			return s
 
 def test():
-	FJP = FingerJointPanel(300, 150, 20, suppressed_fingers=(3, 0, 3, 0), fingers_inward=(True, True, False, True), kerf=1, finger_width_safety_margin=5)
+	FJP = FingerJointPanel(300, 150, 20, suppressed_fingers=(3, 0, 3, 0),  kerf=1, finger_width_safety_margin=5)
 	FJP.make()	
-	FJP.make_svg(filename='test.svg')
-	FJP.embed_svgs_in_html((FJP.make_svg(),), filename='test.html')
+	FJP.svg(filename='test.svg')
+	FJP.embed_svgs_in_html((FJP.svg(),), filename='test.html')
 	
 
 if __name__ == '__main__':

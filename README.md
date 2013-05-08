@@ -16,7 +16,7 @@ Why bother with this code? A few reasons:
 
 Suggested Values
 ----------------
-Check the specs of whatever materials you intend to use, and whatever documentation of kerf is available. For Ponoko wood materials, thickness variance tends to be 10% and kerf can be set to 0.1mm.
+Check the specs of whatever materials you intend to use, and whatever documentation of kerf is available. For Ponoko wood materials, thickness variance tends to be 10% and kerf can be set to 0.2mm.
 
 
 Requirements

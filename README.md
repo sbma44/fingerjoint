@@ -19,6 +19,18 @@ Suggested Values
 Check the specs of whatever materials you intend to use, and whatever documentation of kerf is available. For Ponoko wood materials, thickness variance tends to be 10% and kerf can be set to 0.2mm.
 
 
+Example Code
+------------
+The light_box.py script generates SVGs that can subsequently be used to construct a box. A sample EPS file is provided that reflects what I submitted to Ponoko to successfully print the design. Note that there are differences between the SVG and the EPS -- the script is not yet intended to produce ready-to-print vector output.
+
+
+Known Issues / TODO
+-------------------
+* there is some path doubling on fingers aligned with bottom edges; this produces double-cutting
+* default kerf value may be slightly too large
+* would like to add support for complete box construction, both for rectilinear and other geometries
+
+
 Requirements
 ------------
 * numpy

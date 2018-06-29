@@ -6,7 +6,7 @@ See http://en.wikipedia.org/wiki/Finger_joint for a good discussion of what thes
 
 I published a blog post explaining this project's rationale and showing off some early results here:
 
-http://www.manifestdensity.net/2013/05/31/lasercut-fingerjoint-enclosures-pictures-code/
+http://tomlee.wtf/2013/05/31/lasercut-fingerjoint-enclosures-pictures-code/
 
 I use Ponoko.com to make these, but there are a variety of other sites that do this (Big Blue Saw, eMachineshop, etc.). Your local hackerspace might also have a laser cutter.
 
